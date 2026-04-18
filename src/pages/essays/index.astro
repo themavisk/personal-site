@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EssayCard from '../../components/EssayCard.astro';
+import { getCollection } from 'astro:content';
+
+const essays = await getCollection('essays', ({ data }) => !data.draft);
+essays.sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+---
+<BaseLayout title="Essays" description="All essays by Vamsi Krishna.">
+  <h1>Essays</h1>
+  {essays.length === 0 ? (
+    <p class="empty">No essays yet — check back soon.</p>
+  ) : (
+    essays.map(essay => (
+      <EssayCard
+        title={essay.data.title}
+        description={essay.data.description}
+        publishedAt={essay.data.publishedAt}
+        slug={essay.slug}
+      />
+    ))
+  )}
+</BaseLayout>
+
+<style>
+  h1 {
+    margin-bottom: 2rem;
+  }
+  .empty {
+    color: var(--color-muted);
+  }
+</style>

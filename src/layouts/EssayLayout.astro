@@ -1,0 +1,93 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'essays'>;
+  prevEntry?: { slug: string; data: { title: string } };
+  nextEntry?: { slug: string; data: { title: string } };
+}
+
+const { entry, prevEntry, nextEntry } = Astro.props;
+const { title, description, publishedAt, updatedAt, heroImage } = entry.data;
+
+const pubDate = publishedAt.toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' });
+const updDate = updatedAt?.toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+<BaseLayout title={title} description={description}>
+  <article class="prose">
+    <header class="essay-header">
+      <h1>{title}</h1>
+      <div class="meta">
+        <time datetime={publishedAt.toISOString()}>{pubDate}</time>
+        {updDate && <span class="updated">Updated {updDate}</span>}
+      </div>
+    </header>
+
+    {heroImage && (
+      <Image src={heroImage} alt={title} class="hero-image" />
+    )}
+
+    <slot />
+  </article>
+
+  {(prevEntry || nextEntry) && (
+    <nav class="essay-nav">
+      {prevEntry && (
+        <a href={`/essays/${prevEntry.slug}`} class="prev">
+          ← {prevEntry.data.title}
+        </a>
+      )}
+      {nextEntry && (
+        <a href={`/essays/${nextEntry.slug}`} class="next">
+          {nextEntry.data.title} →
+        </a>
+      )}
+    </nav>
+  )}
+</BaseLayout>
+
+<style>
+  .essay-header {
+    margin-bottom: 2rem;
+  }
+  .essay-header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  .meta {
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    color: var(--color-muted);
+    display: flex;
+    gap: 1rem;
+  }
+  .hero-image {
+    width: 100%;
+    border-radius: 6px;
+    margin-bottom: 2rem;
+  }
+  .essay-nav {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    gap: 1rem;
+  }
+  .prev, .next {
+    color: var(--color-accent);
+    text-decoration: none;
+    max-width: 45%;
+  }
+  .next {
+    margin-left: auto;
+    text-align: right;
+  }
+  .prev:hover, .next:hover {
+    text-decoration: underline;
+  }
+</style>

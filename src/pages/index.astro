@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EssayCard from '../components/EssayCard.astro';
+import { getCollection } from 'astro:content';
+
+const allEssays = await getCollection('essays', ({ data }) => !data.draft);
+const recent = allEssays
+  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
+  .slice(0, 5);
+---
+<BaseLayout title="Home">
+  <section class="intro">
+    <p>
+      I write about questions of existence, consciousness, and how they quietly shape the choices we make.
+      My thinking is grounded in non-duality — Shankara, Vivekananda — alongside game theory, mathematics, and technology.
+    </p>
+    <p>
+      <a href="/about">More about me →</a>
+    </p>
+  </section>
+
+  {recent.length > 0 && (
+    <section class="recent-essays">
+      <h2>Recent Essays</h2>
+      {recent.map(essay => (
+        <EssayCard
+          title={essay.data.title}
+          description={essay.data.description}
+          publishedAt={essay.data.publishedAt}
+          slug={essay.slug}
+        />
+      ))}
+      <p class="all-link">
+        <a href="/essays">All essays →</a>
+      </p>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .intro {
+    margin-bottom: 3rem;
+  }
+  .intro p {
+    font-size: 1.1rem;
+    color: var(--color-text);
+    max-width: var(--measure);
+  }
+  .recent-essays h2 {
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-muted);
+    margin-bottom: 1rem;
+  }
+  .all-link {
+    margin-top: 1.5rem;
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+  }
+</style>

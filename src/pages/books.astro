@@ -1,0 +1,111 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const books = await getCollection('books');
+books.sort((a, b) => b.data.yearRead - a.data.yearRead);
+
+const byYear = books.reduce<Record<number, typeof books>>((acc, book) => {
+  const y = book.data.yearRead;
+  if (!acc[y]) acc[y] = [];
+  acc[y].push(book);
+  return acc;
+}, {});
+
+const years = Object.keys(byYear).map(Number).sort((a, b) => b - a);
+---
+<BaseLayout title="Books" description="Reading list with notes by Vamsi Krishna.">
+  <h1>Books</h1>
+  {years.length === 0 ? (
+    <p class="empty">No books listed yet.</p>
+  ) : (
+    years.map(year => (
+      <section class="year-section">
+        <h2 class="year-heading">{year}</h2>
+        {byYear[year].map(async (book) => {
+          const { Content } = await book.render();
+          return (
+            <article class="book-entry">
+              <div class="book-meta">
+                <span class="book-title">{book.data.title}</span>
+                <span class="book-author">— {book.data.author}</span>
+                {book.data.rating && (
+                  <span class="rating" aria-label={`${book.data.rating} out of 5`}>
+                    {'★'.repeat(book.data.rating)}{'☆'.repeat(5 - book.data.rating)}
+                  </span>
+                )}
+              </div>
+              <div class="book-note">
+                <Content />
+              </div>
+              {book.data.fullEssay && (
+                <a href={`/essays/${book.data.fullEssay}`} class="essay-link">
+                  Read full essay →
+                </a>
+              )}
+            </article>
+          );
+        })}
+      </section>
+    ))
+  )}
+</BaseLayout>
+
+<style>
+  h1 {
+    margin-bottom: 2rem;
+  }
+  .year-section {
+    margin-bottom: 3rem;
+  }
+  .year-heading {
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-muted);
+    margin-bottom: 1.25rem;
+  }
+  .book-entry {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .book-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.4rem;
+  }
+  .book-title {
+    font-weight: 600;
+  }
+  .book-author {
+    color: var(--color-muted);
+    font-size: 0.95rem;
+  }
+  .rating {
+    color: var(--color-accent);
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+  }
+  .book-note {
+    font-size: 0.95rem;
+    color: var(--color-text);
+    max-width: var(--measure);
+  }
+  .essay-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+  .essay-link:hover {
+    text-decoration: underline;
+  }
+  .empty {
+    color: var(--color-muted);
+  }
+</style>

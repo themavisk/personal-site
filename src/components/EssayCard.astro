@@ -1,0 +1,51 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  publishedAt: Date;
+  slug: string;
+}
+const { title, description, publishedAt, slug } = Astro.props;
+const date = publishedAt.toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+<article class="essay-card">
+  <a href={`/essays/${slug}`} class="essay-link">
+    <h2>{title}</h2>
+    <p class="description">{description}</p>
+    <time datetime={publishedAt.toISOString()} class="date">{date}</time>
+  </a>
+</article>
+
+<style>
+  .essay-card {
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .essay-card:first-child {
+    padding-top: 0;
+  }
+  .essay-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+  .essay-link:hover h2 {
+    color: var(--color-accent);
+  }
+  h2 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+    transition: color 0.15s;
+  }
+  .description {
+    color: var(--color-muted);
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+  }
+  .date {
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    color: var(--color-muted);
+  }
+</style>

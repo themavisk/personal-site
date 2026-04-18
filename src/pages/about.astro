@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="About" description="About Singupuram Vamsi Krishna — philosopher, IIT Kharagpur & IIM Calcutta alumnus.">
+  <article class="prose">
+    <h1>About</h1>
+
+    <p>
+      I'm Singupuram Vamsi Krishna — a thinker drawn to questions of existence, consciousness,
+      and how they quietly shape the choices we make every day.
+    </p>
+
+    <p>
+      Most of my thinking circles back to one question: how does a deeper understanding of
+      consciousness help us progress toward the realization of our own self? My ideas are grounded
+      in non-duality, and I draw heavily from the works of Adi Shankara and Vivekananda.
+    </p>
+
+    <p>
+      I'm also interested in game theory and mathematical frameworks as lenses on economics and
+      business, and in how technology can genuinely serve human progress. Somewhere across
+      philosophy, mathematics, and technology, I'm working toward a unified theory of progress.
+    </p>
+
+    <p>
+      I graduated from IIT Kharagpur in Mechanical Engineering in 2021, then pursued an MBA at
+      IIM Calcutta (2022–2024), graduating with Institute Rank 24 and the Institute Prize for
+      finishing in the top 5% of my batch. I spent about ten months in investment banking before
+      stepping back to do what I should have been doing all along — practicing yoga, reading deeply,
+      and thinking.
+    </p>
+
+    <hr />
+
+    <section class="contact">
+      <h2>Get in touch</h2>
+      <ul>
+        <li>Email: <a href="mailto:svkrishna.iitkgp@gmail.com">svkrishna.iitkgp@gmail.com</a></li>
+        <li>LinkedIn: <a href="https://google.com" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li>GitHub: <a href="https://github.com/themavisk" target="_blank" rel="noopener">github.com/themavisk</a></li>
+      </ul>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  h1 {
+    margin-bottom: 1.75rem;
+  }
+  hr {
+    border: none;
+    border-top: 1px solid var(--color-border);
+    margin: 2.5rem 0;
+  }
+  .contact h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+  }
+  ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  li {
+    font-family: var(--font-ui);
+    font-size: 0.95rem;
+    color: var(--color-muted);
+  }
+  li a {
+    color: var(--color-accent);
+  }
+</style>
