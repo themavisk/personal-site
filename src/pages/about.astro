@@ -1,8 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
+import profilePhoto from '../assets/profile.jpg';
 ---
 <BaseLayout title="About" description="About Singupuram Vamsi Krishna — philosopher, IIT Kharagpur & IIM Calcutta alumnus.">
   <article class="prose">
+    <Image src={profilePhoto} alt="Singupuram Vamsi Krishna" class="profile-photo" width={320} height={320} />
     <h1>About</h1>
 
     <p>
@@ -44,6 +47,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <style>
+  .profile-photo {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    margin-bottom: 2rem;
+  }
   h1 {
     margin-bottom: 1.75rem;
   }

@@ -2,6 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EssayCard from '../components/EssayCard.astro';
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import profilePhoto from '../assets/profile.jpg';
 
 const allEssays = await getCollection('essays', ({ data }) => !data.draft);
 const recent = allEssays
@@ -10,6 +12,10 @@ const recent = allEssays
 ---
 <BaseLayout title="Home">
   <section class="intro">
+    <div class="intro-header">
+      <Image src={profilePhoto} alt="Vamsi Krishna" class="avatar" width={56} height={56} />
+      <span class="name">Vamsi Krishna</span>
+    </div>
     <p>
       I write about questions of existence, consciousness, and how they quietly shape the choices we make.
       My thinking is grounded in non-duality — Shankara, Vivekananda — alongside game theory, mathematics, and technology.
@@ -28,6 +34,7 @@ const recent = allEssays
           description={essay.data.description}
           publishedAt={essay.data.publishedAt}
           slug={essay.slug}
+          heroImage={essay.data.heroImage}
         />
       ))}
       <p class="all-link">
@@ -40,6 +47,25 @@ const recent = allEssays
 <style>
   .intro {
     margin-bottom: 3rem;
+  }
+  .intro-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+  .avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  .name {
+    font-family: var(--font-ui);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-text);
   }
   .intro p {
     font-size: 1.1rem;

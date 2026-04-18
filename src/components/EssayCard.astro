@@ -1,18 +1,26 @@
 ---
+import { Image } from 'astro:assets';
+
 interface Props {
   title: string;
   description: string;
   publishedAt: Date;
   slug: string;
+  heroImage?: ImageMetadata;
 }
-const { title, description, publishedAt, slug } = Astro.props;
+const { title, description, publishedAt, slug, heroImage } = Astro.props;
 const date = publishedAt.toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' });
 ---
 <article class="essay-card">
   <a href={`/essays/${slug}`} class="essay-link">
-    <h2>{title}</h2>
-    <p class="description">{description}</p>
-    <time datetime={publishedAt.toISOString()} class="date">{date}</time>
+    <div class="text">
+      <h2>{title}</h2>
+      <p class="description">{description}</p>
+      <time datetime={publishedAt.toISOString()} class="date">{date}</time>
+    </div>
+    {heroImage && (
+      <Image src={heroImage} alt={title} class="thumbnail" width={120} height={80} />
+    )}
   </a>
 </article>
 
@@ -25,12 +33,17 @@ const date = publishedAt.toLocaleDateString('en-IN', { year: 'numeric', month: '
     padding-top: 0;
   }
   .essay-link {
-    display: block;
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
     text-decoration: none;
     color: inherit;
   }
   .essay-link:hover h2 {
     color: var(--color-accent);
+  }
+  .text {
+    flex: 1;
   }
   h2 {
     font-size: 1.15rem;
@@ -47,5 +60,12 @@ const date = publishedAt.toLocaleDateString('en-IN', { year: 'numeric', month: '
     font-family: var(--font-ui);
     font-size: 0.8rem;
     color: var(--color-muted);
+  }
+  .thumbnail {
+    width: 120px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 4px;
+    flex-shrink: 0;
   }
 </style>
